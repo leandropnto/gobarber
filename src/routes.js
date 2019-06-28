@@ -36,4 +36,6 @@ routes.post(
   AppointmentController.store
 );
 
+routes.get('/appointments', AppointmentController.index);
+
 export default routes;
