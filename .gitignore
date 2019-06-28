@@ -62,3 +62,4 @@ typings/
 
 #arquivos de upload
 tmp/uploads/
+.DS_Store
