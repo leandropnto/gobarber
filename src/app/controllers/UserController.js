@@ -31,6 +31,14 @@ class UserController {
     const { id, name, provider } = await user.update(req.body);
     return res.json({ id, name, email, provider });
   }
+
+  async index(req, res) {
+    const users = await User.findAll({
+      order: ['name'],
+      attributes: { exclude: ['password', 'password_hash'] },
+    });
+    return res.json(users);
+  }
 }
 
 export default new UserController();
