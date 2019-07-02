@@ -1,12 +1,12 @@
 import express from 'express';
 import { resolve } from 'path';
 import * as Sentry from '@sentry/node';
+import Youch from 'youch';
+import 'express-async-errors';
 
 import routes from './routes';
 import './database';
 import sentryConfig from './config/sentry';
-
-import 'express-async-errors';
 
 class App {
   constructor() {
@@ -15,6 +15,7 @@ class App {
 
     this.midlewares();
     this.routes();
+    this.exceptionHandler();
   }
 
   midlewares() {
@@ -34,7 +35,10 @@ class App {
   }
 
   exceptionHandler() {
-    this.server.use(async (err, req, res, next) => {});
+    this.server.use(async (err, req, res, next) => {
+      const errors = await new Youch(err, req).toJSON();
+      return res.status(500).json(errors);
+    });
   }
 }
 export default new App().server;
